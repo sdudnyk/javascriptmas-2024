@@ -22,20 +22,38 @@ For example, only one of these entries should be added to the list — the other
 2. Additional Features: Add functionality to delete or edit items on the list.
 */
 
+Set.prototype.caseInsensitiveHas = function(value) {
+    const lowerCaseValue = value.toLowerCase();
+
+    for (const item of this) {
+        if (item.toLowerCase() === lowerCaseValue) {
+            return true;
+        }
+    }
+
+    return false;
+};
+
 // Get references to DOM elements
 const itemInput = document.getElementById('item-input')
 const addItemButton = document.getElementById('add-item-button')
 const shoppingList = document.getElementById('shopping-list')
-const listArr = []
+const listArr = new Set();
 
 // Function to check item is not duplicate
 function checkDuplicate() {
     
     /* ⚠️ You need to add code to this function! ⚠️*/ 
     
-    const itemText = itemInput.value
-    listArr.push(itemText)
-    renderList()
+    const itemText = itemInput.value;
+    const duplicatelessText = itemText.replace(/\s+/g, ' ').trim();
+
+    if (!listArr.caseInsensitiveHas(duplicatelessText)) {
+        listArr.add(duplicatelessText);
+    }
+
+    itemInput.value = ''; // Clear the input field
+    renderList();
 }
 
 // Function to add an item to the shopping list
@@ -46,7 +64,6 @@ function renderList() {
         listItem.textContent = gift
         shoppingList.appendChild(listItem)
     })
-    itemInput.value = ''; // Clear the input field
 }
 
 // Add event listener to button
