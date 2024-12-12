@@ -27,7 +27,14 @@ Example output: ‍😄
 
 */ 
 function emojifyWord(word){
-    return;
+    const isShortcode = word.startsWith(':') && word.endsWith(':');
+
+    if (!isShortcode) return word;
+
+    const originalWord = word.replaceAll(':', '');
+    const hackedEmoji = hackedEmojis[originalWord];
+
+    return hackedEmoji || word;
 }
 
 console.log(emojifyWord(":angry:"));
@@ -40,8 +47,8 @@ Example input: "Just read your article :thumbsdown:"
 Example output: "Just read your article 👏"
 */ 
 
-function emojifyPhrase(phrase){
-    return;
+function emojifyPhrase(phrase) {
+    return phrase.split(' ').map(word => emojifyWord(word)).join(' ');
 }
 
 console.log(emojifyPhrase("Those shoes :puke:"));
